@@ -1,0 +1,16 @@
+#Runtime: 42.36%  |  Memory: 46.25%
+
+class Solution:
+    def findDifferentBinaryString(self, nums: List[str]) -> str:
+        l = len(nums[0])
+        m = 2**l
+        for x in range(m):
+            x = bin(x)[2:]
+            while len(x) < l:
+                x = '0' + x
+            if x not in nums:
+                return x
+                
+#I utilized the inbuilt python binary converter for this solution. I also took advantage of the fact that the maximum number that 'n' number \
+  of bits can store in binary is 2**n. And so by first converting to binary and using 2**n as my range, I am able to find a number that is not \
+  represented in the given list.
