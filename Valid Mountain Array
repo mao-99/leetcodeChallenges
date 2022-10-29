@@ -1,0 +1,25 @@
+#Runtime : 97.11%  |  Memory: 21.20%
+
+class Solution:
+    def validMountainArray(self, arr: List[int]) -> bool:
+        if len(arr) >= 3:
+            peak = arr.index(max(arr))
+            if (peak == (len(arr) - 1)) or (peak == 0):
+                return False
+            for i in range(0,peak):
+                if arr[i] < arr[i+1]:
+                    pass
+                else:
+                    return False
+            for i in range(peak, len(arr)):
+                try:
+                    if arr[i] > arr[i+1]:
+                        pass
+                    else:
+                        return False
+                except IndexError:
+                    return True
+        else:
+            return False
+            
+#For this solution I created a recursive solution that bisects the array at the peak, and ensures that both sides are strictly moving towards the peak.
