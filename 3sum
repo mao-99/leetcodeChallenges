@@ -1,0 +1,14 @@
+#My solution passed 308/311 test cases, but exceeded the time limit when it got to 308. I utilized the itertools module and the combinations function to 
+  \generate the list of 3 numbers and ran tests to filter them out according to the problem specifics. 
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        import itertools
+        x = itertools.combinations(nums, 3)
+        y = [sorted(i) for i in x if (sum(i) == 0)]
+        z = []
+        [z.append(i) for i in y if i not in z]
+        return z
+        
+        
+#If you have any ideas about how to make it more efficient, I will be glad to listen to your ideas. 
