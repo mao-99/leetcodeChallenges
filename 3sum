@@ -12,3 +12,64 @@ class Solution:
         
         
 #If you have any ideas about how to make it more efficient, I will be glad to listen to your ideas. 
+
+
+#I developed a c++ function that uses the two-pointers method to complete the triplets. 
+#Taking advantage of the fact that arr[i]+arr[j]+arr[k] == 0   => also means that arr[i] = -(arr[j]+arr[k])
+#So using the value of arr[i], I use two pointers (left and right) to find the two values such that arr[i] = -(arr[left]+arr[right])
+#I also included duplicate checkers to help ensure that there are no redundant computations.
+#This algorithm also depends on the input array being sorted, and so I use the inbuilt sort() function to sort the array first
+
+#Algorithm Breakdown: using a for-loop to iterate through each value in the array, I create a target variable that will balance out the value at i.
+#I create a left and a right pointer, with the left pointer pointing to the immediate next element after array[i] and the right pointer pointing to the last element of the array
+#I included a duplicate checker for array[i] to ensure that I dont perform the same computations on duplicates
+#Using a while loop that terminates when left is equal or greater than right, I check if the sum of elements at left and right equals the target
+#If array[left]+array[right] equals target, we add it to allTriplets ; then we check for duplicates ; then we increment left by one and decrement right by one
+#If array[left]+array[right] is less than target, we will move the left pointer up by one (banking on the fact that the list is sorted)
+#If array[left]+array[right] is less than target, we will move the left pointer up by one (banking on the fact that the list is sorted)
+#Finally, we return allTriplets
+
+
+#include<iostream>
+#include<algorithm>
+
+
+class Solution {
+public:
+
+
+vector<vector<int>> threeSum(vector<int>& nums) {
+  vector<vector<int>> allTriplets;
+  sort(nums.begin(), nums.end());
+for (int i=0;i<nums.size();i++){
+    int left = i+1, right=nums.size()-1, target = -(nums.at(i));
+    if (i > 0 && nums[i] == nums[i - 1]) {
+        continue;  // Skip duplicate elements
+    }
+    while (left < right){
+        if (nums.at(right)+nums.at(left)==target){
+            allTriplets.push_back({nums.at(i), nums.at(left), nums.at(right)});
+            
+        while (left<right && nums.at(left)==nums.at(left+1)){
+            left++;
+        }
+        while (left<right && nums.at(right)==nums.at(right-1)){
+            right--;
+        }
+            
+            
+            left++;
+            right--;
+        }
+        else if(nums.at(right)+nums.at(left)<target){
+            left++;
+        }
+        else{
+            right--;
+        }
+
+    }
+}
+return allTriplets;
+}
+};
