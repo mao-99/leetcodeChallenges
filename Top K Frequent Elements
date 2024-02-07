@@ -1,0 +1,65 @@
+Top K Frequent Elements: 
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+Solution: Time Complexity - O(nlogn)
+
+class Solution {
+public:
+    vector <int> merge(vector<int>& left, vector<int>& right){
+        int i = 0, j = 0;
+        vector<int> res;
+        while (i < left.size() && j < right.size()){
+            if (left.at(i) <= right.at(j)){
+                res.push_back(left.at(i));
+                i++;
+            }
+            else{
+                res.push_back(right.at(j));
+                j++;
+            }
+        }
+        while(i < left.size()){
+            res.push_back(left.at(i));
+            i++;
+        }
+        while(j < right.size()){
+            res.push_back(right.at(j));
+            j++;
+        }
+        return res;
+    }
+    vector <int> mergeSort(vector<int>& nums){
+        if (nums.size() <= 1){
+            return nums;
+        }
+        int mid = nums.size() / 2;
+        vector<int> left(nums.begin(), nums.begin() + mid);
+        vector<int> right(nums.begin() + mid, nums.end());
+        left = mergeSort(left);
+        right = mergeSort(right);
+        nums = merge(left, right);
+        return nums;
+    }
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        
+        nums = mergeSort(nums);
+        vector<vector<int>> groups;
+        for (int i = 0; i < nums.size(); i++){
+            if (groups.size() == 0)
+                groups.push_back({nums.at(i), 1});
+            else{
+                if (groups.at(groups.size() - 1).at(0) == nums.at(i)){
+                    groups.at(groups.size() - 1).at(1) += 1;
+                }
+                else{
+                    groups.push_back({nums.at(i), 1});
+                }
+            }
+        }
+        for (int i = 0; i < groups.size(); i++){
+            cout << "Key: " << groups.at(i).at(0) << "Value: " << groups.at(i).at(1) << endl;
+        }
+        return {1};
+        
+    }
+};
