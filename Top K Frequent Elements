@@ -1,7 +1,7 @@
 Top K Frequent Elements: 
 Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
 
-Solution: Time Complexity - O(nlogn)
+Solution: Time Complexity - O(nlogn) (The solution is wildly inefficient, and I will include another solution that uses hashmaps)
 
 class Solution {
 public:
@@ -40,6 +40,44 @@ public:
         nums = merge(left, right);
         return nums;
     }
+    
+    vector<vector <int>> mergeNested(vector<vector<int>>& left, vector<vector<int>>& right){
+        int i = 0, j = 0;
+        vector<vector<int>> res;
+        while (i < left.size() && j < right.size()){
+            if (left.at(i).at(1) >= right.at(j).at(1)){
+                res.push_back(left.at(i));
+                i++;
+            }
+            else{
+                res.push_back(right.at(j));
+                j++;
+            }
+        }
+        while(i < left.size()){
+            res.push_back(left.at(i));
+            i++;
+        }
+        while(j < right.size()){
+            res.push_back(right.at(j));
+            j++;
+        }
+        return res;
+    }
+
+    vector<vector <int>> mergeSortNested(vector<vector<int>>& nums){
+        if (nums.size() <= 1){
+            return nums;
+        }
+        int mid = nums.size() / 2;
+        vector<vector<int>> left(nums.begin(), nums.begin() + mid);
+        vector<vector<int>> right(nums.begin() + mid, nums.end());
+        left = mergeSortNested(left);
+        right = mergeSortNested(right);
+        nums = mergeNested(left, right);
+        return nums;
+    }
+    
     vector<int> topKFrequent(vector<int>& nums, int k) {
         
         nums = mergeSort(nums);
@@ -56,10 +94,14 @@ public:
                 }
             }
         }
-        for (int i = 0; i < groups.size(); i++){
-            cout << "Key: " << groups.at(i).at(0) << "Value: " << groups.at(i).at(1) << endl;
+        vector<vector<int>> sortedByFreq = mergeSortNested(groups);
+        int i = 0;
+        vector<int> final;
+        while(k > 0){
+            final.push_back(sortedByFreq.at(i).at(0));
+            i++; k--;
         }
-        return {1};
+        return final;
         
     }
 };
