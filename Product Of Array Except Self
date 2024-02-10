@@ -1,0 +1,31 @@
+Problem: Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer. 
+          You must write an algorithm that runs in O(n) time and without using the division operation.
+
+Solution: This solution has O(n) runtime by utilizing a flag that terminates the process when the flag is false. I ran a loop through the array multiple times, and because of this the solution did not pass all test cases. 
+          I have not yet been able to come up with a solution that passes all 22 test cases. This one passes 18/22, and exceeds the time limit on large inputs.
+
+Code: 
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        bool flag = true;
+        vector <int> res;
+        int j = 0;
+        while (flag){
+            int prod = 1;
+            for(int i = 0; i < nums.size(); i++){
+                if (i != j){
+                    prod *= nums.at(i);
+                }
+            }
+            res.push_back(prod);
+            j++;
+            if (j == nums.size()){
+                flag = false;
+                break;
+            }
+        }
+        return res;
+    }
+};
