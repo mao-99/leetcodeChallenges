@@ -1,0 +1,47 @@
+Problem Statement:     Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. You must write an algorithm that runs in O(n) time.
+
+Solution:        I use an ordered map to arrange the elements, then look for the longest sequence inside the map
+
+#include <map>
+using namespace std;
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int count, max = 0;
+        map <int, int> dict;
+        for (int i = 0; i < nums.size(); i++){
+            try{
+                if (dict.at(nums.at(i)) > 0)
+                    dict.at(nums.at(i)) += 1;
+            }
+            catch (const out_of_range& e){
+                dict[nums.at(i)] = 1;
+                //cout << "Caught out of range error: " << e.what() << endl;
+            }
+        }
+        for (auto it = dict.begin(); it != dict.end(); it++){
+            if (it == dict.begin()){
+                count = 1;
+                if (max < count){
+                    max = count;
+                }
+            }
+            else{
+                auto prev_it = prev(it);
+                if (it->first == (prev_it->first)+1){
+                    count += 1;
+                    if (max < count){
+                        max = count;
+                    }
+                }
+                else{
+                    if (max < count){
+                        max = count;
+                    }
+                    count = 1;
+                }
+            }
+        }
+        return max;
+    }
+};
